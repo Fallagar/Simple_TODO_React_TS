@@ -3,8 +3,11 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ModalForm from "./modalForm.component";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
-import { toggleForm, setEditDataID } from "../../features/form/formSlice";
+import { TOGGLE_FORM, SET_EDIT_DATA_ID } from "../../features/form/formSlice";
 import { useForm } from "../../app/hooks";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
 interface Result {
   name: string;
@@ -12,34 +15,37 @@ interface Result {
   content: string;
 }
 
-const FormModal: React.FC = () => {
+const ModalWithFrom: React.FC = () => {
+  //This component creates Bootstrap modal, and adding button for add new note
   const formStatus = useAppSelector((status) => status.formStatus.openForm);
   const [show, setShow] = useState(false);
+  //Get form props to pass to the form
   const formProps: Result = useForm();
   useEffect(() => {
     setShow(formStatus);
   }, [formStatus]);
 
   const dispatch = useAppDispatch();
+  //On close, resets store to default
   const handleClose = () => {
-    dispatch(setEditDataID("-1"));
-    dispatch(toggleForm(false));
+    dispatch(SET_EDIT_DATA_ID("-1"));
+    dispatch(TOGGLE_FORM(false));
   };
+  //On close, resets store to default, to add new note
   const handleShow = () => {
-    dispatch(setEditDataID("-1"));
-    dispatch(toggleForm(true));
+    dispatch(SET_EDIT_DATA_ID("-1"));
+    dispatch(TOGGLE_FORM(true));
   };
 
-  console.log(show);
   return (
     <>
       <Button variant="primary" onClick={handleShow} className="mx-auto">
-        Add Note
+        <FontAwesomeIcon icon={faCirclePlus} /> <span>Add Note</span>
       </Button>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Add new note</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <ModalForm {...formProps} />
@@ -49,7 +55,7 @@ const FormModal: React.FC = () => {
             Close
           </Button>
           <Button type="submit" variant="primary" form="newNoteForm">
-            Save Changes
+            Save Note
           </Button>
         </Modal.Footer>
       </Modal>
@@ -57,4 +63,4 @@ const FormModal: React.FC = () => {
   );
 };
 
-export default FormModal;
+export default ModalWithFrom;

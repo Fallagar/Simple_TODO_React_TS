@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
+//If dataId is "-1", form is opened to add new notes, if not "-1", then for editing, and data id points to target note
 
 export const formSlice = createSlice({
   name: 'formStatus',
@@ -9,15 +10,15 @@ export const formSlice = createSlice({
         dataId: "-1"
   },
   reducers: {    
-    toggleForm: (state, action: PayloadAction<boolean>) => {
+    TOGGLE_FORM: (state, action: PayloadAction<boolean>) => {
       state.openForm = action.payload
       },
-    setEditDataID:  (state, action: PayloadAction<string>) => {
+    SET_EDIT_DATA_ID:  (state, action: PayloadAction<string>) => {
       state.dataId = action.payload
       }
   },
 })
 
-export const {toggleForm, setEditDataID} = formSlice.actions
+export const {TOGGLE_FORM, SET_EDIT_DATA_ID} = formSlice.actions
 
 export default formSlice.reducer

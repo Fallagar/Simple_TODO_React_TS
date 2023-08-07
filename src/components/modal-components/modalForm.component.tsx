@@ -3,9 +3,9 @@ import Form from "react-bootstrap/Form";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { Note } from "../../app/mock";
-import { addItem, editNote } from "../../features/notes/noteSlice";
+import { ADD_ITEM, EDIT_NOTE } from "../../features/notes/noteSlice";
 import { v4 as uuidv4 } from "uuid";
-import { setEditDataID, toggleForm } from "../../features/form/formSlice";
+import { SET_EDIT_DATA_ID, TOGGLE_FORM } from "../../features/form/formSlice";
 
 interface Props {
   name: string;
@@ -14,18 +14,21 @@ interface Props {
 }
 
 const ModalForm: React.FC<Props> = ({ name, category, content }) => {
+  //Default values for inputs and select
   const [formData, setFormData] = useState({
     name: name,
     category: category,
     content: content,
   });
   const dispatch = useAppDispatch();
+  //Getting form purpose from store
   const idForEdit = useAppSelector(
     (state: RootState) => state.formStatus.dataId
   );
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
+    // Add new note
     if (idForEdit === "-1") {
       const note = new Note(
         formData.name,
@@ -35,8 +38,9 @@ const ModalForm: React.FC<Props> = ({ name, category, content }) => {
         false,
         uuidv4()
       );
-      dispatch(addItem({ ...note }));
+      dispatch(ADD_ITEM({ ...note }));
     } else {
+      //OR Edit note
       const note = new Note(
         formData.name,
         formData.category,
@@ -46,7 +50,7 @@ const ModalForm: React.FC<Props> = ({ name, category, content }) => {
         "-2"
       );
       dispatch(
-        editNote({
+        EDIT_NOTE({
           name: note.name,
           category: note.category,
           content: note.content,
@@ -55,10 +59,11 @@ const ModalForm: React.FC<Props> = ({ name, category, content }) => {
         })
       );
     }
-    dispatch(setEditDataID("-1"));
-    dispatch(toggleForm(false));
+    dispatch(SET_EDIT_DATA_ID("-1"));
+    dispatch(TOGGLE_FORM(false));
   }
 
+  //Form watching
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -69,7 +74,6 @@ const ModalForm: React.FC<Props> = ({ name, category, content }) => {
       ...prevFormData,
       [name]: value,
     }));
-    console.log(formData);
   };
   return (
     <Form id="newNoteForm" onSubmit={handleSubmit}>
@@ -79,6 +83,7 @@ const ModalForm: React.FC<Props> = ({ name, category, content }) => {
           type="text"
           name="name"
           value={formData.name}
+          required
           onChange={handleChange}
         />
       </Form.Group>
@@ -89,6 +94,7 @@ const ModalForm: React.FC<Props> = ({ name, category, content }) => {
           size="lg"
           name="category"
           value={formData.category}
+          required
           onChange={handleChange}
         >
           <option value="Task">Task</option>
@@ -97,11 +103,12 @@ const ModalForm: React.FC<Props> = ({ name, category, content }) => {
         </Form.Select>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formNoteContent">
-        <Form.Label>Example textarea</Form.Label>
+        <Form.Label>Note content</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}
           name="content"
+          required
           value={formData.content}
           onChange={handleChange}
         />

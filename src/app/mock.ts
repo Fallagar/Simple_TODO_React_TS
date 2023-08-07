@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
+//Default note class
 export class Note {
   name: string;
   category: string;
@@ -42,7 +43,7 @@ export class Note {
     this.dates = this.getDates(string);
   } 
 }
-
+//Data for initial population
 const initialState = [{
     name: "Do push-ups",
     created: "21 Jun 2022",
@@ -63,8 +64,7 @@ const initialState = [{
     category: "Idea",
     content: "Should sign up for an appointment with dentist. 01/11/2023 through 07/11/2023 will be the best",
     status: "live",    
-  },
-  // Additional items
+  },  
   {
     name: "Buy groceries",
     created: "01 Jul 2023",
@@ -108,6 +108,7 @@ const initialState = [{
     status: "archive",    
   },
 ];
+
 
 export function mockData() {
   const result = initialState.map((item) => {

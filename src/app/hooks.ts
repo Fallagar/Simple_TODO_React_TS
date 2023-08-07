@@ -11,10 +11,11 @@ interface Result {
     category: string;
     content: string;
 }
-
+//Change form fields depending on purpose
 export const useForm = (): Result => {
     const data = useAppSelector((state: RootState) => state.notes);
-    const idForEdit = useAppSelector((state: RootState) => state.formStatus.dataId)
+  const idForEdit = useAppSelector((state: RootState) => state.formStatus.dataId)
+  //If form marked for editing, current values of a note are placed in the form 
     const result: Result = {name: "", category: "Task", content: ""}
     switch (idForEdit) {
         case "-1":
@@ -28,6 +29,8 @@ export const useForm = (): Result => {
     return result;   
 }
 
+
+//Class for calculating summary
 class Summary {
   idea: number;
   ideaLive: number;
@@ -73,6 +76,7 @@ class Summary {
   }
 }
 
+//Hook for calculating summary
 export const useSummary = (): Summary => {
   const data = useAppSelector((state: RootState) => state.notes);
   const SummaryResult = new Summary();
@@ -100,4 +104,11 @@ export const useSummary = (): Summary => {
 
   return SummaryResult;
 };
+
+//Filter data into categories "live" || "archived"
+export const useFilteredData = (query: string) => {
+    const data = useAppSelector((state: RootState) => state.notes)
+    const filtered = data.filter((item) => item.status === query)              
+    return filtered    
+}
 

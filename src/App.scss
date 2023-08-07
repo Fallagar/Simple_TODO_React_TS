@@ -19,8 +19,13 @@ section:nth-of-type(2) > div:first-child {
     background-color: black !important;
     color: white;
 }
-section:nth-of-type(3) > div:first-child {
-    background-color: yellow !important;
+section:nth-of-type(3) {
+    > div:first-child {
+        background-color: yellow !important;
+    }
+    >div > table > tbody > tr >td:last-child > button:first-child {
+        transform: rotate(180deg);
+    }
 }
 section > div:first-child {
     width: -webkit-fit-content;
@@ -30,4 +35,7 @@ section > div:first-child {
     padding: 10px 15px;
     font-weight: bold;
     border-radius: 0.315rem;
+}
+td > button {
+    margin: 2px;
 }
