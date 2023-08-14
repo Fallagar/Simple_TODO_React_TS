@@ -1,4 +1,4 @@
-# Radency Test 2
+# TODO - React, TS, Redux, Bootstrap
 
 # Getting Started with Create React App
 
